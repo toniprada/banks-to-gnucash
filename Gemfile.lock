@@ -61,9 +61,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bankscrap
   bankscrap-bbva
   bankscrap-ing
+  levenshtein-ffi
   mailgun
 
 BUNDLED WITH
