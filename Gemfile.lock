@@ -61,6 +61,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bankscrap
   bankscrap-bbva
   bankscrap-ing
   mailgun
