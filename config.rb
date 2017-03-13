@@ -1,0 +1,13 @@
+module BankReport
+  class Config
+    ING_USER        = ENV['ING_USER']
+    ING_PASSWORD    = ENV['ING_PASSWORD']
+    ING_BIRTHDATE   = ENV['ING_BIRTHDATE']
+    BBVA_USER       = ENV['BBVA_USER']
+    BBVA_PASSWORD   = ENV['BBVA_PASSWORD']
+    MAILGUN_API_KEY = ENV['MAILGUN_API_KEY']
+    EMAIL_FROM      = ENV['EMAIL_FROM']
+    EMAIL_TO        = ENV['EMAIL_TO']
+    EMAIL_DOMAIN    = ENV['EMAIL_DOMAIN']
+  end
+end
