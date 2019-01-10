@@ -5,42 +5,41 @@ require_relative './config'
 module BankReport
   # :nodoc:
   class BankHelper
-    def month_transactions(month)
-      all_banks_month_transactions(month)
+
+    def accounts_last_quarter_transactions
+      bbva = bbva_accounts_last_quarter_transactions
+      ing = ing_accounts_last_quarter_transactions
+      bbva.merge(ing)
     end
 
     private
 
-    def all_banks_month_transactions(month)
-      txs = bbva_month_transactions(month) + ing_month_transactions(month)
-      sort_transactions(txs)
-    end
-
-    def bbva_month_transactions(month)
-      bank = Bankscrap::BBVA::Bank.new(user: Config::BBVA_USER,
-                                       password: Config::BBVA_PASSWORD)
-      bank_month_transactions(bank, month)
-    end
-
-    def ing_month_transactions(month)
+    def ing_accounts_last_quarter_transactions
       bank = Bankscrap::ING::Bank.new(dni: Config::ING_USER,
-                                      password: Config::ING_PASSWORD,
-                                      birthday: Config::ING_BIRTHDATE)
-      bank_month_transactions(bank, month)
+                                password: Config::ING_PASSWORD,
+                                birthday: Config::ING_BIRTHDATE)
+      bank_accounts_last_quarter_transactions(bank)
     end
 
-    def bank_month_transactions(bank, month)
-      transactions = []
+    def bbva_accounts_last_quarter_transactions
+      bank = Bankscrap::BBVA::Bank.new(user: Config::BBVA_USER,
+                                          password: Config::BBVA_PASSWORD)
+      bank_accounts_last_quarter_transactions(bank)
+    end
+
+    def bank_accounts_last_quarter_transactions(bank)
+      from = 3.months.ago.beginning_of_month
+      to = 1.months.ago.end_of_month
+      bank_accounts_transactions(bank, from, to)
+    end
+
+    def bank_accounts_transactions(bank, from, to)
+      txs = {}
       bank.accounts.each do |account|
-        ts = account.fetch_transactions(start_date: month.at_beginning_of_month,
-                                        end_date:   month.at_end_of_month)
-        transactions += ts.map { |t| [account.name, t] }
+        txs[account.name] = account.fetch_transactions(start_date: from, end_date: to)
       end
-      transactions
+      txs
     end
 
-    def sort_transactions(transactions)
-      transactions.sort { |a, b| a[1].effective_date <=> b[1].effective_date }
-    end
   end
 end

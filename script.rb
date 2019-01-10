@@ -2,16 +2,16 @@ require_relative './bank_helper'
 require_relative './mail_helper'
 
 def format_transactions(transactions)
-  transactions.map do |t|
-    [t[1].effective_date.to_s, t[1].description, t[1].amount,
-     t[1].amount.currency.to_s, t[0], t[1].balance]
+  transactions.map do |tx|
+    [tx.effective_date.to_s, tx.description, tx.amount, tx.amount.currency.to_s, tx.balance]
   end
 end
 
-month = Date.today.prev_month
-transactions = BankReport::BankHelper.new.month_transactions(month)
-csv_string = CSV.generate do |csv|
-  csv << %w(effective_date description amount currency account_name balance)
-  format_transactions(transactions).each { |t| csv << t }
+csvs = {}
+accounts = BankReport::BankHelper.new.accounts_last_quarter_transactions
+accounts.each do |name, transactions|
+  csvs[name] = CSV.generate do |csv|
+    format_transactions(transactions).each { |t| csv << t }
+  end
 end
-BankReport::MailHelper.new.send(month.strftime('%B'), csv_string)
+BankReport::MailHelper.new.send(csvs)
