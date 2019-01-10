@@ -2,7 +2,7 @@
 
 This is a simple script to send me by email a CSV of last quarter transactions. Such CSV is [GnuCash](https://www.gnucash.org/) friendly and can be easily imported to self-manage your personal finances.
 
-The motivation for this project is the need of 1) knowing more about my personal expenses and 2) a better process to organize my freelance taxes (that's the reason for quaterly reports) and 3) mistrust of services that import your bank data and then sell it to other financial providers.
+The motivation for this project is the need of 1) knowing more about my personal expenses, 2) a better process to organize my freelance taxes (that's the reason for quaterly reports) and 3) mistrust of services that import your bank data and then sell it to other financial providers.
 
 ## Customization
 
